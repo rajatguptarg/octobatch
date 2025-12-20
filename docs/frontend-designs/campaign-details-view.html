@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Campaign Details View</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "primary-hover": "#1d65f0",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "surface-dark": "#1e293b",
+                        "surface-darker": "#111722",
+                        "border-dark": "#324467",
+                        "text-secondary": "#92a4c9"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white overflow-hidden flex h-screen w-full">
+<!-- Side Navigation -->
+<aside class="w-20 lg:w-64 flex-shrink-0 border-r border-border-dark bg-surface-darker flex flex-col justify-between transition-all duration-300">
+<div class="flex flex-col gap-4 p-4">
+<!-- App Header -->
+<div class="flex items-center gap-3 px-2">
+<div class="bg-primary/20 bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 flex items-center justify-center text-primary" data-alt="Abstract logo gradient">
+<span class="material-symbols-outlined text-2xl">rocket_launch</span>
+</div>
+<div class="hidden lg:flex flex-col">
+<h1 class="text-white text-base font-bold leading-normal">Orchestrator</h1>
+<p class="text-text-secondary text-xs font-normal">DevOps Platform</p>
+</div>
+</div>
+<!-- Nav Links -->
+<nav class="flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="hidden lg:block text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined fill-1">format_list_bulleted</span>
+<span class="hidden lg:block text-sm font-medium">Campaigns</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined">hub</span>
+<span class="hidden lg:block text-sm font-medium">Repositories</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="hidden lg:block text-sm font-medium">Logs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-text-secondary hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="hidden lg:block text-sm font-medium">Settings</span>
+</a>
+</nav>
+</div>
+<!-- User Profile -->
+<div class="p-4 border-t border-border-dark">
+<div class="flex items-center gap-3 px-2">
+<div class="size-8 rounded-full bg-slate-700 bg-cover bg-center" data-alt="User avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBjea6e3il3bMjhDpKtv7n7wAeiOmiwoi-Lqi93O6zA7bt4swBUeaLx4RexkPof50mIBwvPouP6BTuY5wFDL-VxQH44nVQAlgmlVzidGkIjZOX29w-85UOezg7Q4kiJvijd74cGmWjJdfNmt8avOzJyjzFOkRnqCtDX8Hg_6SBR2RUUs4tIfGtzyORDh5gFiwYcNGt81DMQwdvEtxWdUuzdUVTRoqs_ugLtZJc_yhEAlvCOfm0Tqh98elljhxJKLqfbQEOMBbJFc6O6')"></div>
+<div class="hidden lg:flex flex-col">
+<p class="text-white text-sm font-medium">Jane Doe</p>
+<p class="text-text-secondary text-xs">Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Top Bar / Header -->
+<header class="w-full border-b border-border-dark bg-background-dark/50 backdrop-blur-md z-10">
+<div class="max-w-[1600px] mx-auto p-4 sm:p-6 lg:p-8 pb-4">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 mb-4">
+<a class="text-text-secondary text-sm font-medium hover:text-white transition-colors" href="#">Campaigns</a>
+<span class="material-symbols-outlined text-text-secondary text-xs">chevron_right</span>
+<span class="text-white text-sm font-medium">Migrate CI Pipelines to v2</span>
+</div>
+<!-- Page Title & Primary Actions -->
+<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+<div class="flex flex-col gap-2 max-w-2xl">
+<h1 class="text-white text-3xl sm:text-4xl font-black leading-tight tracking-tight">Migrate CI Pipelines to v2</h1>
+<p class="text-text-secondary text-base font-normal leading-relaxed">Bulk update of all microservice repositories to use the new shared CI workflow templates to enforce security compliance.</p>
+</div>
+<div class="flex items-center gap-3 self-start md:self-center">
+<button class="flex items-center gap-2 h-10 px-4 rounded-lg bg-surface-dark border border-border-dark text-white text-sm font-medium hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+<span>Edit Spec</span>
+</button>
+<button class="flex items-center gap-2 h-10 px-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium hover:bg-red-500/20 transition-colors">
+<span class="material-symbols-outlined text-[20px]">cancel</span>
+<span>Kill</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto">
+<div class="max-w-[1600px] mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-8">
+<!-- Action / Status Panel -->
+<div class="w-full @container">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 rounded-xl border border-primary/30 bg-primary/5 p-5 relative overflow-hidden">
+<!-- Background glow effect -->
+<div class="absolute -top-24 -left-24 w-48 h-48 bg-primary/20 blur-[80px] rounded-full pointer-events-none"></div>
+<div class="flex items-center gap-4 relative z-10">
+<div class="relative flex items-center justify-center size-12">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-20"></span>
+<div class="relative inline-flex rounded-full size-3 bg-primary"></div>
+</div>
+<div class="flex flex-col">
+<h3 class="text-white text-lg font-bold leading-tight flex items-center gap-2">
+                                    Campaign Status: Running
+                                    <span class="text-xs px-2 py-0.5 rounded-full bg-primary/20 text-primary font-mono border border-primary/20">v2.1.0</span>
+</h3>
+<p class="text-text-secondary text-sm">Started 25 mins ago by admin-user • 45% Complete</p>
+</div>
+</div>
+<button class="relative z-10 flex items-center gap-2 h-9 px-4 rounded-lg bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary-hover transition-all">
+<span class="material-symbols-outlined text-[18px]">pause</span>
+<span>Pause Campaign</span>
+</button>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex flex-col gap-1 rounded-xl p-5 border border-border-dark bg-surface-darker hover:border-primary/50 transition-colors group">
+<div class="flex items-center justify-between">
+<p class="text-text-secondary text-xs font-medium uppercase tracking-wider">Repos Targeted</p>
+<span class="material-symbols-outlined text-text-secondary group-hover:text-primary transition-colors">folder_open</span>
+</div>
+<p class="text-white text-3xl font-bold mt-2">120</p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 border border-border-dark bg-surface-darker hover:border-primary/50 transition-colors group">
+<div class="flex items-center justify-between">
+<p class="text-text-secondary text-xs font-medium uppercase tracking-wider">PRs Open</p>
+<span class="material-symbols-outlined text-text-secondary group-hover:text-amber-400 transition-colors">call_merge</span>
+</div>
+<p class="text-white text-3xl font-bold mt-2">45</p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 border border-border-dark bg-surface-darker hover:border-primary/50 transition-colors group">
+<div class="flex items-center justify-between">
+<p class="text-text-secondary text-xs font-medium uppercase tracking-wider">PRs Merged</p>
+<span class="material-symbols-outlined text-text-secondary group-hover:text-emerald-400 transition-colors">check_circle</span>
+</div>
+<p class="text-white text-3xl font-bold mt-2">32</p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 border border-border-dark bg-surface-darker hover:border-primary/50 transition-colors group">
+<div class="flex items-center justify-between">
+<p class="text-text-secondary text-xs font-medium uppercase tracking-wider">Success Rate</p>
+<span class="material-symbols-outlined text-text-secondary group-hover:text-primary transition-colors">trending_up</span>
+</div>
+<div class="flex items-end gap-2">
+<p class="text-white text-3xl font-bold mt-2">94%</p>
+<p class="text-emerald-400 text-sm font-medium mb-1.5 flex items-center">
+<span class="material-symbols-outlined text-[16px] mr-0.5">arrow_upward</span> 2.1%
+                            </p>
+</div>
+</div>
+</div>
+<!-- Main Layout Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<!-- Left Column: Tabs & Detailed Content -->
+<div class="xl:col-span-2 flex flex-col gap-6">
+<!-- Tabs Header -->
+<div class="border-b border-border-dark">
+<nav aria-label="Tabs" class="flex gap-6">
+<button aria-current="page" class="shrink-0 border-b-2 border-primary py-4 px-1 text-sm font-medium text-white">
+                                    Overview
+                                </button>
+<button class="shrink-0 border-b-2 border-transparent py-4 px-1 text-sm font-medium text-text-secondary hover:text-white hover:border-white/20 transition-all">
+                                    YAML Spec
+                                </button>
+<button class="shrink-0 border-b-2 border-transparent py-4 px-1 text-sm font-medium text-text-secondary hover:text-white hover:border-white/20 transition-all flex items-center gap-2">
+                                    Run History
+                                    <span class="bg-surface-dark px-1.5 py-0.5 rounded text-[10px] text-white">12</span>
+</button>
+<button class="shrink-0 border-b-2 border-transparent py-4 px-1 text-sm font-medium text-text-secondary hover:text-white hover:border-white/20 transition-all">
+                                    Drift Policies
+                                </button>
+</nav>
+</div>
+<!-- Tab Content: Overview -->
+<div class="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
+<!-- Progress Card -->
+<div class="rounded-xl border border-border-dark bg-surface-darker p-6">
+<div class="flex items-center justify-between mb-4">
+<h4 class="text-white text-base font-bold">Current Execution</h4>
+<span class="text-xs text-text-secondary font-mono">ID: #Run-39482</span>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-sm mb-2">
+<span class="text-white font-medium">Processing Repositories</span>
+<span class="text-primary font-bold">45%</span>
+</div>
+<div class="w-full bg-surface-dark rounded-full h-2.5 overflow-hidden">
+<div class="bg-primary h-2.5 rounded-full w-[45%] relative overflow-hidden">
+<div class="absolute inset-0 bg-white/20 w-full h-full animate-[shimmer_2s_infinite] -skew-x-12 translate-x-[-100%]"></div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+<div class="bg-surface-dark rounded-lg p-3 border border-white/5">
+<p class="text-text-secondary text-xs">Elapsed Time</p>
+<p class="text-white text-lg font-mono font-medium mt-1">00:25:42</p>
+</div>
+<div class="bg-surface-dark rounded-lg p-3 border border-white/5">
+<p class="text-text-secondary text-xs">Errors Detected</p>
+<p class="text-white text-lg font-mono font-medium mt-1 flex items-center gap-2">
+                                                0
+                                                <span class="material-symbols-outlined text-emerald-500 text-sm">check_circle</span>
+</p>
+</div>
+<div class="bg-surface-dark rounded-lg p-3 border border-white/5">
+<p class="text-text-secondary text-xs">Estimated Completion</p>
+<p class="text-white text-lg font-mono font-medium mt-1">~12 mins</p>
+</div>
+</div>
+</div>
+</div>
+<!-- YAML Preview (Collapsed view simulation) -->
+<div class="rounded-xl border border-border-dark bg-surface-darker overflow-hidden">
+<div class="flex items-center justify-between px-4 py-3 border-b border-border-dark bg-surface-dark/50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-text-secondary text-sm">code</span>
+<span class="text-white text-sm font-medium">campaign.yaml</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="text-text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">open_in_full</span>
+</button>
+</div>
+</div>
+<div class="p-0 overflow-x-auto">
+<pre class="text-xs sm:text-sm leading-relaxed font-mono text-gray-300 p-4 bg-[#0d1117] m-0"><span class="text-purple-400">version:</span> <span class="text-sky-300">'1'</span>
+<span class="text-purple-400">name:</span> <span class="text-sky-300">"Migrate CI Pipelines to v2"</span>
+
+<span class="text-purple-400">defaults:</span>
+  <span class="text-purple-400">drift_policy:</span> <span class="text-sky-300">stop-and-alert</span>
+
+<span class="text-purple-400">steps:</span>
+  <span class="text-gray-500"># Check if repo has old CI config</span>
+  <span class="text-blue-400">-</span> <span class="text-purple-400">name:</span> <span class="text-sky-300">Verify Old Config</span>
+    <span class="text-purple-400">action:</span> <span class="text-sky-300">fs/exists</span>
+    <span class="text-purple-400">target:</span> <span class="text-sky-300">.github/workflows/main.yml</span>
+  
+  <span class="text-gray-500"># Replace with new template</span>
+  <span class="text-blue-400">-</span> <span class="text-purple-400">name:</span> <span class="text-sky-300">Replace CI Config</span>
+    <span class="text-purple-400">action:</span> <span class="text-sky-300">git/replace-file</span>
+    <span class="text-purple-400">source:</span> <span class="text-sky-300">templates/ci-v2.yml</span>
+    <span class="text-purple-400">target:</span> <span class="text-sky-300">.github/workflows/main.yml</span>
+</pre>
+</div>
+</div>
+<!-- Recent Runs Table (Mini) -->
+<div class="rounded-xl border border-border-dark bg-surface-darker overflow-hidden">
+<div class="px-6 py-4 border-b border-border-dark flex justify-between items-center">
+<h4 class="text-white text-base font-bold">Recent Run History</h4>
+<button class="text-primary text-sm font-medium hover:underline">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm text-text-secondary">
+<thead class="bg-surface-dark text-xs uppercase font-medium">
+<tr>
+<th class="px-6 py-3">Run ID</th>
+<th class="px-6 py-3">Date</th>
+<th class="px-6 py-3">Duration</th>
+<th class="px-6 py-3">Status</th>
+<th class="px-6 py-3 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-dark">
+<!-- Current Run -->
+<tr class="bg-primary/5">
+<td class="px-6 py-4 font-mono text-white">#39482</td>
+<td class="px-6 py-4">Today, 10:23 AM</td>
+<td class="px-6 py-4 font-mono">Running...</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
+<span class="size-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+                                                        Running
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-text-secondary hover:text-white"><span class="material-symbols-outlined">visibility</span></button>
+</td>
+</tr>
+<!-- Past Run -->
+<tr class="hover:bg-surface-dark transition-colors">
+<td class="px-6 py-4 font-mono text-white">#39481</td>
+<td class="px-6 py-4">Yesterday, 4:00 PM</td>
+<td class="px-6 py-4 font-mono">14m 32s</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                                        Success
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-text-secondary hover:text-white"><span class="material-symbols-outlined">visibility</span></button>
+</td>
+</tr>
+<!-- Failed Run -->
+<tr class="hover:bg-surface-dark transition-colors">
+<td class="px-6 py-4 font-mono text-white">#39480</td>
+<td class="px-6 py-4">Oct 24, 2023</td>
+<td class="px-6 py-4 font-mono">02m 15s</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
+                                                        Failed
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-text-secondary hover:text-white"><span class="material-symbols-outlined">visibility</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Contextual Side Panel -->
+<div class="xl:col-span-1 flex flex-col gap-6">
+<!-- Metadata Card -->
+<div class="rounded-xl border border-border-dark bg-surface-darker p-5">
+<h4 class="text-white text-base font-bold mb-4">Campaign Info</h4>
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between py-2 border-b border-white/5">
+<span class="text-text-secondary text-sm">Created By</span>
+<div class="flex items-center gap-2">
+<div class="size-5 rounded-full bg-indigo-500 bg-cover bg-center" data-alt="User avatar small" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB7ro4sfeQC2-mn98zdpCDoXKu2lpWdADqjd_NHjJe3neKyC-iUOFRk38TXo814P1F77aWEw4BGfCdwOn5nXUP9z0Dla0dSl9868BAgfNh-NBpjEBCzHC8GEPbYn0X_bMG4SpNapW6Vko00mU_zOngrm3N6trXrv7_K_qX2tNglPA2CUIrwqDdO6WxLOIVsAIKsAnQGFAPEXkPnzw9GYBaAE4y7mUXEUHhikYyCP5iN4IKmJ6VGnfYNZOqqHKkjTBVbobZ8ATh8EjD_')"></div>
+<span class="text-white text-sm">Jane Doe</span>
+</div>
+</div>
+<div class="flex items-center justify-between py-2 border-b border-white/5">
+<span class="text-text-secondary text-sm">Created At</span>
+<span class="text-white text-sm">Oct 20, 2023</span>
+</div>
+<div class="flex items-center justify-between py-2 border-b border-white/5">
+<span class="text-text-secondary text-sm">Last Modified</span>
+<span class="text-white text-sm">2 hours ago</span>
+</div>
+<div class="flex items-center justify-between py-2">
+<span class="text-text-secondary text-sm">Drift Policy</span>
+<span class="text-amber-400 text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+                                        Stop &amp; Alert
+                                    </span>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-border-dark">
+<h5 class="text-white text-sm font-bold mb-3">Parameters</h5>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 rounded bg-surface-dark border border-border-dark text-xs text-text-secondary font-mono">env: production</span>
+<span class="px-2 py-1 rounded bg-surface-dark border border-border-dark text-xs text-text-secondary font-mono">branch: main</span>
+<span class="px-2 py-1 rounded bg-surface-dark border border-border-dark text-xs text-text-secondary font-mono">timeout: 60m</span>
+</div>
+</div>
+</div>
+<!-- Live Logs / Activity Stream -->
+<div class="rounded-xl border border-border-dark bg-surface-darker flex flex-col flex-1 min-h-[400px]">
+<div class="px-5 py-3 border-b border-border-dark flex justify-between items-center bg-surface-dark/30">
+<h4 class="text-white text-sm font-bold flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+</span>
+                                    Live Logs
+                                </h4>
+<div class="flex gap-2">
+<button class="text-text-secondary hover:text-white" title="Download Logs"><span class="material-symbols-outlined text-[18px]">download</span></button>
+<button class="text-text-secondary hover:text-white" title="Expand"><span class="material-symbols-outlined text-[18px]">open_in_new</span></button>
+</div>
+</div>
+<div class="flex-1 p-4 bg-[#0d1117] font-mono text-xs overflow-y-auto max-h-[500px] text-gray-300 space-y-2">
+<div class="flex gap-3 opacity-50">
+<span class="text-gray-500 select-none">10:23:01</span>
+<span>Initiating campaign run #39482...</span>
+</div>
+<div class="flex gap-3 opacity-60">
+<span class="text-gray-500 select-none">10:23:02</span>
+<span>[System] Loading repository list from target_group:microservices</span>
+</div>
+<div class="flex gap-3">
+<span class="text-gray-500 select-none">10:23:05</span>
+<span><span class="text-blue-400">INFO</span> Found 120 repositories matching criteria.</span>
+</div>
+<div class="flex gap-3">
+<span class="text-gray-500 select-none">10:23:15</span>
+<span><span class="text-blue-400">INFO</span> [worker-1] cloned repo: service-auth-v1</span>
+</div>
+<div class="flex gap-3">
+<span class="text-gray-500 select-none">10:23:16</span>
+<span><span class="text-blue-400">INFO</span> [worker-2] cloned repo: service-payment-gateway</span>
+</div>
+<div class="flex gap-3">
+<span class="text-gray-500 select-none">10:23:18</span>
+<span><span class="text-yellow-400">WARN</span> [worker-3] service-inventory: drift detected in main.yml. Applying drift policy...</span>
+</div>
+<div class="flex gap-3">
+<span class="text-gray-500 select-none">10:23:22</span>
+<span><span class="text-blue-400">INFO</span> [worker-1] PR created: https://github.com/org/service-auth-v1/pull/45</span>
+</div>
+<div class="flex gap-3">
+<span class="text-gray-500 select-none">10:23:25</span>
+<span><span class="text-blue-400">INFO</span> [worker-4] Starting batch 2 processing...</span>
+</div>
+<div class="flex gap-3 border-l-2 border-primary pl-2 ml-1 bg-white/5 py-1">
+<span class="text-gray-500 select-none">10:48:42</span>
+<span class="text-white font-bold">Processing current batch... (Active)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Spacer -->
+<div class="h-10"></div>
+</div>
+</main>
+<script>
+        // Inline script to add a custom animation to the config if needed, 
+        // but Tailwind handles most via the CDN + config block.
+    </script>
+</body></html>

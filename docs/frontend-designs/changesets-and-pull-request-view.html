@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Campaign Orchestrator - Changesets</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "border-dark": "#232f48", // Custom from example
+                        "surface-dark": "#111722", // Custom from example
+                        "card-dark": "#192231", // Slightly lighter for cards/tables
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom Scrollbar for the table if needed */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111722; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #324467; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4B5E85; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-x-hidden min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-border-dark bg-white dark:bg-surface-dark px-6 lg:px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-6 text-primary">
+<svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 45.8096C19.6865 45.8096 15.4698 44.5305 11.8832 42.134C8.29667 39.7376 5.50128 36.3314 3.85056 32.3462C2.19985 28.361 1.76794 23.9758 2.60947 19.7452C3.451 15.5145 5.52816 11.6284 8.57829 8.5783C11.6284 5.52817 15.5145 3.45101 19.7452 2.60948C23.9758 1.76795 28.361 2.19986 32.3462 3.85057C36.3314 5.50129 39.7376 8.29668 42.134 11.8833C44.5305 15.4698 45.8096 19.6865 45.8096 24L24 24L24 45.8096Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Campaign Orchestrator</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4 lg:gap-8 items-center">
+<div class="hidden md:flex items-center gap-6 lg:gap-9">
+<a class="text-slate-500 hover:text-primary dark:text-slate-300 dark:hover:text-white text-sm font-medium transition-colors" href="#">Campaigns</a>
+<a class="text-slate-500 hover:text-primary dark:text-slate-300 dark:hover:text-white text-sm font-medium transition-colors" href="#">Repositories</a>
+<a class="text-slate-500 hover:text-primary dark:text-slate-300 dark:hover:text-white text-sm font-medium transition-colors" href="#">Settings</a>
+</div>
+<button class="hidden sm:flex h-9 items-center justify-center rounded-lg px-4 bg-primary hover:bg-blue-600 text-white text-sm font-bold transition-colors">
+                New Campaign
+            </button>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-9 ring-2 ring-slate-200 dark:ring-border-dark" data-alt="User profile avatar showing a blurry abstract gradient" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCehP6xD-x3K45rEBlurwsWjY9zqBI95RqUdKK0xcxuOqNSqjcKy9HvPVZz-XmxNv74g47ovf9wZzGoq9CCqAKdzfgTXEMLRpI1RUCVDQfA3qQWZEpaYSFJ4hkWktZRHIqHO7MWtUxiNMXHi5cCw0pX5BajdUCtbk6tKB-Pxq3xts1pJhgM5DeNwwWF2g-BuvLm0Xn96ei-AjQgaO_hpGGO-M_9OsupoKyWE4eXwCBRztZFysFhZeuFwiOTCSRM_x9FKSyOHw1dmWJI");'></div>
+</div>
+</header>
+<!-- Main Layout -->
+<main class="flex-1 flex justify-center py-6 px-4 md:px-8 lg:px-12">
+<div class="flex flex-col max-w-[1200px] flex-1 gap-6">
+<!-- Breadcrumbs -->
+<div class="flex flex-wrap gap-2 items-center">
+<a class="text-slate-500 dark:text-[#92a4c9] hover:text-primary dark:hover:text-white text-sm font-medium" href="#">Campaigns</a>
+<span class="material-symbols-outlined text-base text-slate-400 dark:text-[#505f79]">chevron_right</span>
+<a class="text-slate-500 dark:text-[#92a4c9] hover:text-primary dark:hover:text-white text-sm font-medium" href="#">Upgrade React v18</a>
+<span class="material-symbols-outlined text-base text-slate-400 dark:text-[#505f79]">chevron_right</span>
+<span class="text-slate-900 dark:text-white text-sm font-medium">Changesets</span>
+</div>
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row justify-between gap-4 md:items-end">
+<div class="flex flex-col gap-2">
+<h1 class="text-slate-900 dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Upgrade React v18</h1>
+<div class="flex items-center gap-3 text-slate-500 dark:text-[#92a4c9] text-sm">
+<span class="font-mono bg-slate-200 dark:bg-border-dark px-1.5 py-0.5 rounded text-xs text-slate-700 dark:text-slate-300">#8291-A</span>
+<span>•</span>
+<span>Created 2 days ago by @johndoe</span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="h-10 px-4 flex items-center gap-2 rounded-lg border border-slate-300 dark:border-border-dark hover:bg-slate-100 dark:hover:bg-card-dark text-slate-700 dark:text-white text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-lg">settings</span>
+                        Configure
+                    </button>
+<button class="h-10 px-4 flex items-center gap-2 rounded-lg bg-slate-900 dark:bg-border-dark hover:bg-slate-700 dark:hover:bg-[#324467] text-white text-sm font-bold transition-colors shadow-lg">
+<span class="material-symbols-outlined text-lg">sync</span>
+                        Sync Campaign
+                    </button>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="flex flex-col gap-1 rounded-xl p-5 border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark/50 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-[#92a4c9] text-sm font-medium">Total PRs</p>
+<span class="material-symbols-outlined text-slate-400 text-xl">folder_open</span>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold">100</p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark/50 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-[#92a4c9] text-sm font-medium">Passing CI</p>
+<span class="material-symbols-outlined text-green-500 text-xl">check_circle</span>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold">82</p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark/50 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-[#92a4c9] text-sm font-medium">Merged</p>
+<span class="material-symbols-outlined text-primary text-xl">merge</span>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold">45</p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark/50 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-[#92a4c9] text-sm font-medium">Failed</p>
+<span class="material-symbols-outlined text-red-500 text-xl">error</span>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold">3</p>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<p class="text-slate-900 dark:text-white text-sm font-medium">Campaign Progress</p>
+<p class="text-slate-500 dark:text-[#92a4c9] text-xs font-medium">45/100 Merged</p>
+</div>
+<div class="h-2.5 w-full rounded-full bg-slate-200 dark:bg-border-dark overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-500" style="width: 45%;"></div>
+</div>
+</div>
+<!-- Toolbar & Actions -->
+<div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 pt-4">
+<div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+<!-- Search -->
+<div class="relative w-full sm:w-72">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 text-xl">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2 border border-slate-300 dark:border-border-dark rounded-lg leading-5 bg-white dark:bg-card-dark text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm" placeholder="Search repositories..." type="text"/>
+</div>
+<!-- Filter Dropdown -->
+<div class="relative">
+<select class="block w-full pl-3 pr-10 py-2 text-base border border-slate-300 dark:border-border-dark focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-lg bg-white dark:bg-card-dark text-slate-900 dark:text-white appearance-none cursor-pointer">
+<option>Status: All</option>
+<option>Status: Open</option>
+<option>Status: Merged</option>
+<option>Status: Failed</option>
+<option>Status: Closed</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
+<span class="material-symbols-outlined text-lg">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Bulk Actions -->
+<div class="flex items-center gap-2 w-full lg:w-auto overflow-x-auto pb-1 lg:pb-0">
+<span class="text-xs font-medium text-slate-500 dark:text-[#92a4c9] whitespace-nowrap mr-2">2 Selected</span>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-card-dark border border-slate-300 dark:border-border-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-white text-xs font-semibold whitespace-nowrap transition-colors">
+<span class="material-symbols-outlined text-base">refresh</span>
+                        Retry
+                    </button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-card-dark border border-slate-300 dark:border-border-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-white text-xs font-semibold whitespace-nowrap transition-colors">
+<span class="material-symbols-outlined text-base">call_merge</span>
+                        Rebase
+                    </button>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-card-dark border border-slate-300 dark:border-border-dark hover:border-red-500/50 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 text-xs font-semibold whitespace-nowrap transition-colors">
+<span class="material-symbols-outlined text-base">close</span>
+                        Close
+                    </button>
+<div class="h-6 w-px bg-slate-300 dark:bg-border-dark mx-1"></div>
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary hover:bg-blue-600 text-white text-xs font-semibold whitespace-nowrap transition-colors shadow-sm">
+<span class="material-symbols-outlined text-base">merge</span>
+                        Merge Selected
+                    </button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="w-full overflow-hidden rounded-xl border border-slate-200 dark:border-border-dark bg-white dark:bg-card-dark shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-slate-50 dark:bg-[#1e293b] border-b border-slate-200 dark:border-border-dark text-xs uppercase text-slate-500 dark:text-[#92a4c9] font-semibold">
+<tr>
+<th class="px-6 py-4 w-12 text-center">
+<input class="rounded border-slate-300 dark:border-slate-600 text-primary focus:ring-primary bg-transparent h-4 w-4 cursor-pointer" type="checkbox"/>
+</th>
+<th class="px-6 py-4 min-w-[200px]">Repository</th>
+<th class="px-6 py-4 min-w-[250px]">PR Title</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4">Checks</th>
+<th class="px-6 py-4 text-right">Updated</th>
+<th class="px-6 py-4 w-16"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-border-dark text-sm">
+<!-- Row 1: Merged -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-center">
+<input class="rounded border-slate-300 dark:border-slate-600 text-primary focus:ring-primary bg-transparent h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-lg">folder</span>
+</div>
+<div class="flex flex-col">
+<span class="font-medium text-slate-900 dark:text-white">payment-service</span>
+<span class="text-xs text-slate-500">v1.2.0</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<a class="font-medium text-slate-900 dark:text-white hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-1 group-hover:underline decoration-slate-400 underline-offset-4" href="#">
+                                        feat: Upgrade to React 18
+                                        <span class="material-symbols-outlined text-sm text-slate-400 -rotate-45">arrow_forward</span>
+</a>
+<span class="text-xs text-slate-500 block mt-1">#4392</span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50">
+<span class="size-1.5 rounded-full bg-purple-500"></span>
+                                        Merged
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1">
+<div class="group/tooltip relative">
+<span class="material-symbols-outlined text-green-500 text-xl cursor-help">check_circle</span>
+</div>
+<span class="text-xs text-slate-500 ml-1">4/4 passed</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right text-slate-500 dark:text-[#92a4c9]">
+                                    2h ago
+                                </td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Open / Pending -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-white/5 transition-colors bg-slate-50/50 dark:bg-primary/5">
+<td class="px-6 py-4 text-center">
+<input checked="" class="rounded border-slate-300 dark:border-slate-600 text-primary focus:ring-primary bg-transparent h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-lg">dns</span>
+</div>
+<div class="flex flex-col">
+<span class="font-medium text-slate-900 dark:text-white">frontend-monorepo</span>
+<span class="text-xs text-slate-500">main</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<a class="font-medium text-slate-900 dark:text-white hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-1 group-hover:underline decoration-slate-400 underline-offset-4" href="#">
+                                        feat: Upgrade to React 18
+                                        <span class="material-symbols-outlined text-sm text-slate-400 -rotate-45">arrow_forward</span>
+</a>
+<span class="text-xs text-slate-500 block mt-1">#10293</span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800/50">
+<span class="size-1.5 rounded-full bg-green-500"></span>
+                                        Open
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-500 text-xl animate-spin" style="animation-duration: 3s;">progress_activity</span>
+<span class="text-xs text-slate-500">Running...</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right text-slate-500 dark:text-[#92a4c9]">
+                                    5m ago
+                                </td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Failed -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-white/5 transition-colors bg-slate-50/50 dark:bg-primary/5">
+<td class="px-6 py-4 text-center">
+<input checked="" class="rounded border-slate-300 dark:border-slate-600 text-primary focus:ring-primary bg-transparent h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-lg">lock</span>
+</div>
+<div class="flex flex-col">
+<span class="font-medium text-slate-900 dark:text-white">auth-provider</span>
+<span class="text-xs text-slate-500">v2.0.1</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<a class="font-medium text-slate-900 dark:text-white hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-1 group-hover:underline decoration-slate-400 underline-offset-4" href="#">
+                                        feat: Upgrade to React 18
+                                        <span class="material-symbols-outlined text-sm text-slate-400 -rotate-45">arrow_forward</span>
+</a>
+<span class="text-xs text-slate-500 block mt-1">#582</span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800/50">
+<span class="material-symbols-outlined text-sm">error</span>
+                                        Failed
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-red-500 text-xl">cancel</span>
+<span class="text-xs text-red-500 dark:text-red-400 ml-1">Lint failed</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right text-slate-500 dark:text-[#92a4c9]">
+                                    1d ago
+                                </td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Open / Passed -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-center">
+<input class="rounded border-slate-300 dark:border-slate-600 text-primary focus:ring-primary bg-transparent h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-lg">notifications</span>
+</div>
+<div class="flex flex-col">
+<span class="font-medium text-slate-900 dark:text-white">notification-worker</span>
+<span class="text-xs text-slate-500">v0.9.5</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<a class="font-medium text-slate-900 dark:text-white hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-1 group-hover:underline decoration-slate-400 underline-offset-4" href="#">
+                                        feat: Upgrade to React 18
+                                        <span class="material-symbols-outlined text-sm text-slate-400 -rotate-45">arrow_forward</span>
+</a>
+<span class="text-xs text-slate-500 block mt-1">#881</span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800/50">
+<span class="size-1.5 rounded-full bg-green-500"></span>
+                                        Open
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-green-500 text-xl">check_circle</span>
+<span class="text-xs text-slate-500 ml-1">2/2 passed</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right text-slate-500 dark:text-[#92a4c9]">
+                                    3d ago
+                                </td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 5: Closed -->
+<tr class="group hover:bg-slate-50 dark:hover:bg-white/5 transition-colors opacity-60">
+<td class="px-6 py-4 text-center">
+<input class="rounded border-slate-300 dark:border-slate-600 text-primary focus:ring-primary bg-transparent h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-lg">web</span>
+</div>
+<div class="flex flex-col">
+<span class="font-medium text-slate-900 dark:text-white">landing-page-v2</span>
+<span class="text-xs text-slate-500">archived</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<a class="font-medium text-slate-900 dark:text-white hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-1 group-hover:underline decoration-slate-400 underline-offset-4" href="#">
+                                        feat: Upgrade to React 18
+                                        <span class="material-symbols-outlined text-sm text-slate-400 -rotate-45">arrow_forward</span>
+</a>
+<span class="text-xs text-slate-500 block mt-1">#112</span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+<span class="material-symbols-outlined text-sm">block</span>
+                                        Closed
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-slate-400 text-xl">remove_circle_outline</span>
+<span class="text-xs text-slate-500 ml-1">Skipped</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right text-slate-500 dark:text-[#92a4c9]">
+                                    5d ago
+                                </td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between px-6 py-4 border-t border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-[#1e293b]">
+<div class="text-xs text-slate-500 dark:text-[#92a4c9]">
+                        Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span class="font-medium">100</span> results
+                    </div>
+<div class="flex items-center gap-2">
+<button class="p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-50 text-slate-500 dark:text-white transition-colors" disabled="">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<button class="p-1 rounded hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

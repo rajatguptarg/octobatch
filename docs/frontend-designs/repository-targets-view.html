@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Repository Targets View</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111722",
+                        "surface-dark": "#1a2230",
+                        "border-dark": "#232f48",
+                        "text-secondary": "#92a4c9",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111722; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #232f48; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #324467; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden h-screen flex">
+<!-- Sidebar -->
+<aside class="w-64 border-r border-border-dark bg-background-dark flex-col hidden md:flex shrink-0">
+<div class="p-6 flex items-center gap-3 border-b border-border-dark/50">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-8 shrink-0" data-alt="Abstract geometric logo in blue and purple gradients" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDlJOidxlhfNrhz8xgT1eZhuVrh2Qe-Av4LxlumwDEMKl3BiteEPAPQZoNzswaqX3v0meb4hI5Oywt5QiIgxKAB-LfrN5gioUaB_K5YZHla_CLj736cN02H1rNVHevd_25S6pT4IQKswC_6LmarzCOy3A9GMqUX2Yf08wvmrMwDNgOO2JhyPOyg6NzQCYXowws3NX3fMmbBaa7_QtDB_G7cR114S_E8OITsSCfenK8tnLdjB9OGBM8r1pcW9bl9vsmYynFVekcp3TgW");'></div>
+<h1 class="text-white text-base font-bold leading-normal truncate">Campaign Orch.</h1>
+</div>
+<div class="flex flex-col gap-1 p-4 overflow-y-auto flex-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-surface-dark hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-white transition-colors">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px] fill-1">layers</span>
+<span class="text-sm font-medium">Campaigns</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-surface-dark hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-white transition-colors">code</span>
+<span class="text-sm font-medium">Repositories</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-surface-dark hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-white transition-colors">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-secondary hover:bg-surface-dark hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-white transition-colors">list_alt</span>
+<span class="text-sm font-medium">Logs</span>
+</a>
+</div>
+<div class="p-4 border-t border-border-dark">
+<div class="flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-surface-dark rounded-lg transition-colors">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-8 shrink-0" data-alt="User avatar profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC9vdQxI87QF2qoMuxitFRSQle3PlsstDRnp-2tt2Rs665pkEkMgYqeTGDpKIr_2xonwzYXE2MJ_4hP0Ymp0yRHMvqZa6n2U_3QW6rmm0b5K6M_cc_iQVBHAxHRbsjsJ5LMK6YFc3PX39b6iUETxMU8fUC47eS5433PwCsAiIr4buCetFwM7W2HraLMPwRML9LY47_Sjs9qor0pN6H_JCOQwAP5kyFdkcSmmUZZlGLDJXPnLNdW3ZDZWEeP5dvv0urki4yy45pvoIgT");'></div>
+<div class="flex flex-col overflow-hidden">
+<p class="text-white text-sm font-medium truncate">Jane Doe</p>
+<p class="text-text-secondary text-xs truncate">DevOps Lead</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full min-w-0 overflow-hidden relative">
+<!-- Top Nav -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-border-dark px-6 py-3 bg-background-dark/95 backdrop-blur z-10 shrink-0">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-text-secondary hover:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex items-center gap-2 text-white/50 text-sm">
+<span class="material-symbols-outlined text-[18px]">search</span>
+<span class="hidden sm:inline">Press <kbd class="font-sans px-1.5 py-0.5 bg-surface-dark border border-border-dark rounded text-xs text-text-secondary">Cmd + K</kbd> to search</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative text-text-secondary hover:text-white transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 size-2 bg-red-500 rounded-full border-2 border-background-dark"></span>
+</button>
+</div>
+</header>
+<!-- Scrollable Page Area -->
+<div class="flex-1 overflow-y-auto">
+<div class="max-w-[1400px] mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-6">
+<!-- Breadcrumbs -->
+<nav class="flex flex-wrap gap-2 text-sm">
+<a class="text-text-secondary hover:text-white transition-colors" href="#">Campaigns</a>
+<span class="text-text-secondary">/</span>
+<a class="text-text-secondary hover:text-white transition-colors" href="#">Migrate to React 18</a>
+<span class="text-text-secondary">/</span>
+<span class="text-white font-medium">Targets</span>
+</nav>
+<!-- Page Heading & Actions -->
+<div class="flex flex-wrap justify-between items-end gap-4">
+<div class="flex flex-col gap-1 max-w-3xl">
+<h1 class="text-white text-3xl sm:text-4xl font-black tracking-[-0.033em] leading-tight">Campaign Targets</h1>
+<p class="text-text-secondary text-base font-normal">Manage the scope of repositories targeted by the "Migrate to React 18" campaign.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-surface-dark border border-border-dark text-white text-sm font-bold hover:bg-[#232f48] transition-colors">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+<span class="hidden sm:inline">Refresh Data</span>
+</button>
+<button class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors shadow-[0_0_15px_rgba(19,91,236,0.3)]">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<span>Retry Failed</span>
+</button>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex flex-col gap-1 p-5 rounded-xl border border-border-dark bg-surface-dark/50 hover:bg-surface-dark transition-colors">
+<p class="text-text-secondary text-sm font-medium">Total Targeted</p>
+<div class="flex items-baseline gap-2">
+<p class="text-white text-3xl font-bold tracking-tight">245</p>
+<span class="text-emerald-500 text-xs font-medium flex items-center">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> 12%
+                            </span>
+</div>
+</div>
+<div class="flex flex-col gap-1 p-5 rounded-xl border border-border-dark bg-surface-dark/50 hover:bg-surface-dark transition-colors">
+<p class="text-text-secondary text-sm font-medium">Success Rate</p>
+<div class="flex items-baseline gap-2">
+<p class="text-white text-3xl font-bold tracking-tight">92%</p>
+<span class="text-emerald-500 text-xs font-medium flex items-center">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> 2%
+                            </span>
+</div>
+</div>
+<div class="flex flex-col gap-1 p-5 rounded-xl border border-border-dark bg-surface-dark/50 hover:bg-surface-dark transition-colors">
+<p class="text-text-secondary text-sm font-medium">Pending</p>
+<div class="flex items-baseline gap-2">
+<p class="text-white text-3xl font-bold tracking-tight">45</p>
+<span class="text-orange-500 text-xs font-medium flex items-center">
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span> 5%
+                            </span>
+</div>
+</div>
+<div class="flex flex-col gap-1 p-5 rounded-xl border border-border-dark bg-surface-dark/50 hover:bg-surface-dark transition-colors relative overflow-hidden">
+<div class="absolute right-0 top-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-6xl text-red-500">error</span>
+</div>
+<p class="text-text-secondary text-sm font-medium">Failed</p>
+<div class="flex items-baseline gap-2">
+<p class="text-white text-3xl font-bold tracking-tight">5</p>
+<span class="text-red-500 text-xs font-medium flex items-center">
+                                +1 today
+                            </span>
+</div>
+</div>
+</div>
+<!-- Main List Section -->
+<div class="flex flex-col gap-4">
+<!-- Toolbar -->
+<div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-surface-dark border border-border-dark rounded-xl p-3">
+<div class="flex flex-1 w-full sm:w-auto items-center gap-2 bg-background-dark border border-border-dark rounded-lg px-3 h-10 focus-within:ring-2 focus-within:ring-primary/50 transition-shadow">
+<span class="material-symbols-outlined text-text-secondary text-[20px]">search</span>
+<input class="bg-transparent border-none text-white placeholder-text-secondary text-sm w-full focus:ring-0 p-0" placeholder="Filter by repository name..." type="text"/>
+</div>
+<div class="flex gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+<select class="bg-background-dark border border-border-dark text-white text-sm rounded-lg h-10 pl-3 pr-8 focus:ring-primary focus:border-primary cursor-pointer">
+<option>All Statuses</option>
+<option>Processing</option>
+<option>Success</option>
+<option>Failed</option>
+<option>Excluded</option>
+</select>
+<button class="flex items-center gap-2 px-3 h-10 rounded-lg border border-border-dark text-text-secondary hover:text-white hover:bg-background-dark transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+<span class="text-sm font-medium">More Filters</span>
+</button>
+</div>
+</div>
+<!-- Table Container -->
+<div class="border border-border-dark rounded-xl overflow-hidden bg-surface-dark/30 shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-border-dark bg-surface-dark">
+<th class="py-3 px-5 text-xs font-semibold uppercase tracking-wider text-text-secondary w-1/3">Repository</th>
+<th class="py-3 px-5 text-xs font-semibold uppercase tracking-wider text-text-secondary w-32">Status</th>
+<th class="py-3 px-5 text-xs font-semibold uppercase tracking-wider text-text-secondary">Message / Reason</th>
+<th class="py-3 px-5 text-xs font-semibold uppercase tracking-wider text-text-secondary w-40">Last Updated</th>
+<th class="py-3 px-5 text-xs font-semibold uppercase tracking-wider text-text-secondary w-20 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-dark text-sm">
+<!-- Row 1: Processing -->
+<tr class="group hover:bg-surface-dark/50 transition-colors">
+<td class="py-4 px-5">
+<div class="flex items-center gap-3">
+<div class="bg-blue-500/10 p-2 rounded-lg text-blue-400">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+</div>
+<div class="flex flex-col">
+<span class="text-white font-medium group-hover:text-primary transition-colors cursor-pointer">acme-corp/frontend-monorepo</span>
+<span class="text-text-secondary text-xs">main branch</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-5">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-blue-500/10 px-2.5 py-1 text-xs font-medium text-blue-400 border border-blue-500/20">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+</span>
+                                                Processing
+                                            </span>
+</td>
+<td class="py-4 px-5">
+<span class="text-text-secondary">Running semantic analysis on 245 files...</span>
+</td>
+<td class="py-4 px-5 text-text-secondary font-mono text-xs">Just now</td>
+<td class="py-4 px-5 text-right">
+<button class="p-1.5 rounded-md text-text-secondary hover:text-white hover:bg-background-dark transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Failed -->
+<tr class="group hover:bg-surface-dark/50 transition-colors">
+<td class="py-4 px-5">
+<div class="flex items-center gap-3">
+<div class="bg-red-500/10 p-2 rounded-lg text-red-400">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+</div>
+<div class="flex flex-col">
+<span class="text-white font-medium group-hover:text-primary transition-colors cursor-pointer">acme-corp/legacy-auth-service</span>
+<span class="text-text-secondary text-xs">master branch</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-5">
+<span class="inline-flex items-center rounded-full bg-red-500/10 px-2.5 py-1 text-xs font-medium text-red-400 border border-red-500/20">
+                                                Failed
+                                            </span>
+</td>
+<td class="py-4 px-5">
+<div class="flex items-center gap-2 text-white">
+<span class="material-symbols-outlined text-[16px] text-red-400">warning</span>
+<span>Merge conflict detected in <code class="bg-black/30 px-1 py-0.5 rounded text-xs font-mono text-text-secondary">package.json</code></span>
+</div>
+</td>
+<td class="py-4 px-5 text-text-secondary font-mono text-xs">10m ago</td>
+<td class="py-4 px-5 text-right">
+<div class="flex justify-end gap-1">
+<button class="p-1.5 rounded-md text-primary hover:bg-primary/10 transition-colors" title="Retry">
+<span class="material-symbols-outlined text-[20px]">replay</span>
+</button>
+<button class="p-1.5 rounded-md text-text-secondary hover:text-white hover:bg-background-dark transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Excluded -->
+<tr class="group hover:bg-surface-dark/50 transition-colors">
+<td class="py-4 px-5">
+<div class="flex items-center gap-3 opacity-60">
+<div class="bg-surface-dark p-2 rounded-lg text-text-secondary">
+<span class="material-symbols-outlined text-[20px]">folder_off</span>
+</div>
+<div class="flex flex-col">
+<span class="text-white font-medium">acme-corp/docs-site</span>
+<span class="text-text-secondary text-xs">v2 branch</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-5">
+<span class="inline-flex items-center rounded-full bg-surface-dark px-2.5 py-1 text-xs font-medium text-text-secondary border border-border-dark">
+                                                Excluded
+                                            </span>
+</td>
+<td class="py-4 px-5">
+<span class="text-text-secondary italic">Pattern mismatch: No `react` dependency found.</span>
+</td>
+<td class="py-4 px-5 text-text-secondary font-mono text-xs">15m ago</td>
+<td class="py-4 px-5 text-right">
+<button class="p-1.5 rounded-md text-text-secondary hover:text-white hover:bg-background-dark transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Success -->
+<tr class="group hover:bg-surface-dark/50 transition-colors">
+<td class="py-4 px-5">
+<div class="flex items-center gap-3">
+<div class="bg-emerald-500/10 p-2 rounded-lg text-emerald-400">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+</div>
+<div class="flex flex-col">
+<span class="text-white font-medium group-hover:text-primary transition-colors cursor-pointer">acme-corp/customer-portal</span>
+<span class="text-text-secondary text-xs">develop</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-5">
+<span class="inline-flex items-center rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400 border border-emerald-500/20">
+                                                Success
+                                            </span>
+</td>
+<td class="py-4 px-5">
+<span class="text-text-secondary">PR #402 created and queued for merge.</span>
+</td>
+<td class="py-4 px-5 text-text-secondary font-mono text-xs">1h ago</td>
+<td class="py-4 px-5 text-right">
+<button class="p-1.5 rounded-md text-text-secondary hover:text-white hover:bg-background-dark transition-colors">
+<span class="material-symbols-outlined text-[20px]">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 5: Success -->
+<tr class="group hover:bg-surface-dark/50 transition-colors">
+<td class="py-4 px-5">
+<div class="flex items-center gap-3">
+<div class="bg-emerald-500/10 p-2 rounded-lg text-emerald-400">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+</div>
+<div class="flex flex-col">
+<span class="text-white font-medium group-hover:text-primary transition-colors cursor-pointer">acme-corp/analytics-dashboard</span>
+<span class="text-text-secondary text-xs">main</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-5">
+<span class="inline-flex items-center rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400 border border-emerald-500/20">
+                                                Success
+                                            </span>
+</td>
+<td class="py-4 px-5">
+<span class="text-text-secondary">PR #89 created and approved.</span>
+</td>
+<td class="py-4 px-5 text-text-secondary font-mono text-xs">1h ago</td>
+<td class="py-4 px-5 text-right">
+<button class="p-1.5 rounded-md text-text-secondary hover:text-white hover:bg-background-dark transition-colors">
+<span class="material-symbols-outlined text-[20px]">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Row 6: Pending -->
+<tr class="group hover:bg-surface-dark/50 transition-colors">
+<td class="py-4 px-5">
+<div class="flex items-center gap-3">
+<div class="bg-surface-dark p-2 rounded-lg text-text-secondary">
+<span class="material-symbols-outlined text-[20px]">pending</span>
+</div>
+<div class="flex flex-col">
+<span class="text-white font-medium group-hover:text-primary transition-colors cursor-pointer">acme-corp/mobile-api</span>
+<span class="text-text-secondary text-xs">staging</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-5">
+<span class="inline-flex items-center rounded-full bg-orange-500/10 px-2.5 py-1 text-xs font-medium text-orange-400 border border-orange-500/20">
+                                                Pending
+                                            </span>
+</td>
+<td class="py-4 px-5">
+<span class="text-text-secondary">Queued for processing. Position: 45</span>
+</td>
+<td class="py-4 px-5 text-text-secondary font-mono text-xs">-</td>
+<td class="py-4 px-5 text-right">
+<button class="p-1.5 rounded-md text-text-secondary hover:text-white hover:bg-background-dark transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between px-5 py-3 border-t border-border-dark bg-surface-dark">
+<div class="text-xs text-text-secondary">
+                                Showing <span class="text-white font-medium">1-6</span> of <span class="text-white font-medium">245</span> repositories
+                            </div>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 rounded-md border border-border-dark bg-background-dark text-text-secondary text-xs font-medium hover:text-white hover:border-text-secondary disabled:opacity-50 disabled:cursor-not-allowed" disabled="">
+                                    Previous
+                                </button>
+<button class="px-3 py-1.5 rounded-md border border-border-dark bg-background-dark text-white text-xs font-medium hover:border-text-secondary">
+                                    Next
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer placeholder to allow scroll past bottom -->
+<div class="h-8"></div>
+</div>
+</div>
+</main>
+<!-- Drawer/Details Overlay (Static representation of a "drawer" opening) -->
+<!-- Hidden by default, un-comment to visualize in a real scenario
+    <div class="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-sm hidden">
+        <div class="w-full max-w-lg bg-surface-dark h-full border-l border-border-dark shadow-2xl p-6 flex flex-col gap-6">
+            <div class="flex items-center justify-between">
+                <h2 class="text-white text-xl font-bold">Details: acme-corp/legacy-auth</h2>
+                <button class="text-text-secondary hover:text-white">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            ... Content ...
+        </div>
+    </div>
+    -->
+</body></html>

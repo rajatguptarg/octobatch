@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>New Campaign - Spec Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111722",
+                        "surface-dark": "#192233",
+                        "surface-darker": "#0d1117",
+                        "editor-bg": "#1e2229",
+                        "border-dark": "#232f48",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .editor-line-number {
+            user-select: none;
+            text-align: right;
+            padding-right: 1.5rem;
+            color: #4b5563;
+        }
+        .code-keyword { color: #c678dd; } /* Purple */
+        .code-string { color: #98c379; } /* Green */
+        .code-key { color: #e06c75; } /* Red */
+        .code-value { color: #d19a66; } /* Orange */
+        .code-comment { color: #5c6370; font-style: italic; } /* Gray */
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-border-dark bg-white dark:bg-[#111722] px-6 py-3 shrink-0">
+<div class="flex items-center gap-4">
+<div class="size-6 text-slate-900 dark:text-white">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 6H42L36 24L42 42H6L12 24L6 6Z" fill="currentColor"></path>
+</svg>
+</div>
+<div class="h-6 w-px bg-gray-300 dark:bg-gray-700 mx-2"></div>
+<!-- Breadcrumbs embedded in header for efficiency -->
+<nav class="flex items-center gap-2 text-sm">
+<a class="text-slate-500 dark:text-[#92a4c9] hover:text-primary transition-colors" href="#">Campaigns</a>
+<span class="text-slate-400 dark:text-[#52607a] material-symbols-outlined text-base">chevron_right</span>
+<span class="text-slate-900 dark:text-white font-medium">New Campaign</span>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<div class="flex items-center gap-6 mr-4 hidden md:flex">
+<a class="text-slate-600 dark:text-[#92a4c9] hover:text-slate-900 dark:hover:text-white text-sm font-medium leading-normal" href="#">Documentation</a>
+<a class="text-slate-600 dark:text-[#92a4c9] hover:text-slate-900 dark:hover:text-white text-sm font-medium leading-normal" href="#">Templates</a>
+</div>
+<button class="flex items-center justify-center rounded-lg h-9 px-4 bg-gray-200 dark:bg-surface-dark hover:bg-gray-300 dark:hover:bg-[#2a364d] text-slate-700 dark:text-white text-sm font-medium transition-colors gap-2">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+<span>Run Preview</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary hover:bg-blue-600 text-white text-sm font-bold shadow-lg shadow-blue-900/20 transition-colors">
+                Create Campaign
+            </button>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-8 ml-2 ring-2 ring-gray-200 dark:ring-border-dark" data-alt="User avatar profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCMN_jfWv81x4qTEMWTYtJlGQMCgs-nY6bSl1vh-_rK_lmnN1AR69CxnpGD5vxRNkdbgBfa3vXyOxL3F1YSlinRDDM5KUJSpDfJT9dexkckJnNGzLVI-WzZ1KERL5sQO1KpRQSaOvX_wX3UMz_pxsMQ4PNWpBc_eK7ozCXHB69nxd93Tszi-tgtiDK7zicCr6NRt02hxYcO_zQWX2FCM3Y_IiM8gtAvPDmSj8j1Ek2-zAOQejjnoKacsqIhDMH7_yImOsr7BIfUYC4d");'></div>
+</div>
+</header>
+<!-- Main Content Layout -->
+<div class="flex flex-1 overflow-hidden">
+<!-- Left Sidebar: Context & Metadata -->
+<aside class="w-80 border-r border-gray-200 dark:border-border-dark bg-gray-50 dark:bg-[#0d1117] flex flex-col overflow-y-auto shrink-0 hidden lg:flex">
+<div class="p-6 border-b border-gray-200 dark:border-border-dark">
+<h1 class="text-xl font-bold mb-4 dark:text-white">Campaign Details</h1>
+<div class="flex flex-col gap-4">
+<label class="flex flex-col gap-1.5">
+<span class="text-xs font-semibold text-slate-500 dark:text-[#92a4c9] uppercase tracking-wider">Name</span>
+<input class="form-input w-full rounded-md border-gray-300 dark:border-[#324467] bg-white dark:bg-[#192233] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#586b8f] focus:ring-primary focus:border-primary py-2 px-3" placeholder="e.g. Upgrade React Version"/>
+</label>
+<label class="flex flex-col gap-1.5">
+<span class="text-xs font-semibold text-slate-500 dark:text-[#92a4c9] uppercase tracking-wider">Description</span>
+<textarea class="form-textarea w-full rounded-md border-gray-300 dark:border-[#324467] bg-white dark:bg-[#192233] text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#586b8f] focus:ring-primary focus:border-primary py-2 px-3 h-24 resize-none" placeholder="Describe the purpose of this campaign..."></textarea>
+</label>
+</div>
+</div>
+<div class="p-6 flex-1">
+<h3 class="text-sm font-semibold text-slate-500 dark:text-[#92a4c9] uppercase tracking-wider mb-4">Quick Reference</h3>
+<div class="flex flex-col gap-3">
+<div class="group cursor-pointer p-3 rounded-lg border border-gray-200 dark:border-[#232f48] bg-white dark:bg-[#111722] hover:border-primary dark:hover:border-primary transition-all">
+<div class="flex justify-between items-center mb-1">
+<span class="font-mono text-xs font-bold text-primary">steps</span>
+<span class="material-symbols-outlined text-slate-400 text-sm group-hover:text-primary">add_circle</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400">Define the sequence of operations to run in each repository.</p>
+</div>
+<div class="group cursor-pointer p-3 rounded-lg border border-gray-200 dark:border-[#232f48] bg-white dark:bg-[#111722] hover:border-primary dark:hover:border-primary transition-all">
+<div class="flex justify-between items-center mb-1">
+<span class="font-mono text-xs font-bold text-primary">repositoriesMatchingQuery</span>
+<span class="material-symbols-outlined text-slate-400 text-sm group-hover:text-primary">add_circle</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400">Select repositories based on a Sourcegraph search query.</p>
+</div>
+<div class="group cursor-pointer p-3 rounded-lg border border-gray-200 dark:border-[#232f48] bg-white dark:bg-[#111722] hover:border-primary dark:hover:border-primary transition-all">
+<div class="flex justify-between items-center mb-1">
+<span class="font-mono text-xs font-bold text-primary">changesetTemplate</span>
+<span class="material-symbols-outlined text-slate-400 text-sm group-hover:text-primary">add_circle</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400">Template for the pull request title, body, and branch name.</p>
+</div>
+</div>
+<div class="mt-8 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900/50">
+<div class="flex gap-2 items-start">
+<span class="material-symbols-outlined text-primary text-lg">info</span>
+<p class="text-xs text-blue-900 dark:text-blue-100 leading-relaxed">
+                            Need help? Check out the <a class="underline font-semibold hover:text-blue-600 dark:hover:text-white" href="#">Batch Changes documentation</a> for full schema details.
+                        </p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Editor Area -->
+<main class="flex-1 flex flex-col min-w-0 bg-white dark:bg-[#111722] relative">
+<!-- Editor Toolbar -->
+<div class="flex items-center justify-between px-4 border-b border-gray-200 dark:border-border-dark bg-gray-50 dark:bg-[#111722]">
+<div class="flex">
+<button class="flex items-center gap-2 px-4 py-3 border-b-2 border-primary text-slate-900 dark:text-white font-medium text-sm bg-white dark:bg-[#192233]">
+<span class="material-symbols-outlined text-base text-primary">code</span>
+                        spec.yaml
+                    </button>
+<button class="flex items-center gap-2 px-4 py-3 border-b-2 border-transparent text-slate-500 dark:text-[#92a4c9] hover:text-slate-800 dark:hover:text-white font-medium text-sm transition-colors">
+<span class="material-symbols-outlined text-base">visibility</span>
+                        Preview
+                    </button>
+</div>
+<div class="flex items-center gap-3">
+<span class="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                        Valid YAML
+                    </span>
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors p-1">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</div>
+<!-- Code Editor Container -->
+<div class="flex-1 overflow-auto bg-white dark:bg-[#0d1117] font-mono text-sm leading-6 relative">
+<!-- Line Numbers Sidebar -->
+<div class="absolute left-0 top-0 bottom-0 w-12 bg-gray-50 dark:bg-[#111722] border-r border-gray-200 dark:border-[#232f48] pt-4 flex flex-col items-end text-slate-400 dark:text-slate-600 select-none z-10">
+<div class="pr-3">1</div>
+<div class="pr-3">2</div>
+<div class="pr-3">3</div>
+<div class="pr-3">4</div>
+<div class="pr-3">5</div>
+<div class="pr-3">6</div>
+<div class="pr-3">7</div>
+<div class="pr-3">8</div>
+<div class="pr-3 text-slate-800 dark:text-slate-300 font-bold bg-gray-200 dark:bg-[#232f48] w-full text-right pr-3">9</div>
+<div class="pr-3">10</div>
+<div class="pr-3">11</div>
+<div class="pr-3">12</div>
+<div class="pr-3">13</div>
+<div class="pr-3">14</div>
+<div class="pr-3">15</div>
+<div class="pr-3">16</div>
+<div class="pr-3">17</div>
+<div class="pr-3">18</div>
+<div class="pr-3">19</div>
+<div class="pr-3">20</div>
+<div class="pr-3">21</div>
+<div class="pr-3">22</div>
+<div class="pr-3">23</div>
+<div class="pr-3">24</div>
+</div>
+<!-- Code Content -->
+<div class="pl-16 pt-4 pr-4 pb-20">
+<!-- Fake Syntax Highlighting -->
+<pre class="m-0"><span class="code-comment"># This campaign will visit all repositories in the organization and update the React version</span>
+<span class="code-key">name:</span> <span class="code-string">upgrade-react-version</span>
+<span class="code-key">description:</span> <span class="code-string">Upgrades React and ReactDOM to version 18.2.0 across all frontend repositories.</span>
+
+<span class="code-key">on:</span>
+  <span class="code-key">- repositoriesMatchingQuery:</span> <span class="code-string">lang:typescript file:package.json org:sourcegraph</span>
+
+<span class="code-key">steps:</span>
+  <span class="code-key">- run:</span> <span class="code-string">npm install react@18.2.0 react-dom@18.2.0</span>
+    <span class="code-key">container:</span> <span class="code-string">node:18-alpine</span>
+<div class="bg-blue-50 dark:bg-[#1e2e4a] border-y border-blue-100 dark:border-blue-900/50 -mx-16 pl-16 py-0.5"><span class="w-[2px] h-5 bg-primary absolute left-12 mt-0.5"></span>  <span class="code-key">- run:</span> <span class="code-string">npm run test</span></div>    <span class="code-key">container:</span> <span class="code-string">node:18-alpine</span>
+
+<span class="code-key">changesetTemplate:</span>
+  <span class="code-key">title:</span> <span class="code-string">Upgrade React to 18.2.0</span>
+  <span class="code-key">body:</span> <span class="code-string">|
+    This PR upgrades React and ReactDOM to version 18.2.0.
+    
+    Please review the changes and run manual tests if necessary.</span>
+  <span class="code-key">branch:</span> <span class="code-string">batch-changes/upgrade-react-18</span>
+  <span class="code-key">commit:</span> <span class="code-string">Upgrade React dependencies</span>
+  <span class="code-key">published:</span> <span class="code-value">false</span> <span class="code-comment"># Do not publish PRs immediately</span>
+
+<span class="code-comment"># Define transform rules for specific file types if needed</span>
+<span class="code-key">transform:</span>
+  <span class="code-key">- group:</span>
+    <span class="code-key">repository:</span> <span class="code-string">github.com/sourcegraph/sourcegraph</span>
+    </pre>
+</div>
+</div>
+<!-- Bottom Status Bar -->
+<div class="border-t border-gray-200 dark:border-border-dark bg-white dark:bg-[#192233] px-4 py-2 flex justify-between items-center text-xs">
+<div class="flex items-center gap-4 text-slate-500 dark:text-[#92a4c9]">
+<span>YAML</span>
+<span>UTF-8</span>
+<span>Ln 9, Col 24</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="flex size-2 rounded-full bg-emerald-500"></span>
+<span class="text-slate-600 dark:text-slate-300">Ready to run</span>
+</div>
+</div>
+</main>
+</div>
+<!-- Floating Help Button (Mobile/Tablet context mainly, but nice visual touch) -->
+<div class="fixed bottom-6 right-6 lg:hidden">
+<button class="flex items-center justify-center size-12 rounded-full bg-primary shadow-lg shadow-blue-900/40 text-white">
+<span class="material-symbols-outlined">question_mark</span>
+</button>
+</div>
+</body></html>

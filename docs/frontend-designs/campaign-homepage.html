@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Campaigns Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#135bec",
+              "background-light": "#f6f6f8",
+              "background-dark": "#101622",
+              "surface-light": "#ffffff",
+              "surface-dark": "#1a2230",
+              "border-light": "#e5e7eb",
+              "border-dark": "#2a364d",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"],
+              "body": ["Inter", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.375rem", 
+              "lg": "0.5rem", 
+              "xl": "0.75rem", 
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col font-display text-slate-900 dark:text-white transition-colors duration-200">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark px-6 py-3 shadow-sm">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-slate-900 dark:text-white">
+<div class="flex size-8 items-center justify-center rounded-lg bg-primary/10 dark:bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-2xl">campaign</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">GitHub Campaigns</h2>
+</div>
+<!-- Search -->
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark focus-within:ring-2 focus-within:ring-primary/50 transition-all">
+<div class="text-slate-500 dark:text-slate-400 flex items-center justify-center pl-3">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg bg-transparent border-none text-slate-900 dark:text-white focus:outline-0 focus:ring-0 placeholder:text-slate-500 dark:placeholder:text-slate-400 px-3 text-sm font-normal leading-normal" placeholder="Search campaigns..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-6">
+<div class="hidden lg:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Repositories</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal transition-colors" href="#">Settings</a>
+</div>
+<div class="flex gap-3 items-center">
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-border-dark text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-border-dark text-slate-600 dark:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-9 border border-border-light dark:border-border-dark" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDQPtHjizDeNSoH7GVDvpVBLvwFZRWmnZyFhZWZcAyX8N4JGJxUaSJzmH3hSxhLgcDtM6LIElJ7BUHftxK8iGInY5EBSZSrq3OJuFcGdliUxfcTBJAJtNQpuVljpmtpmMa1Xp3ZoTrVpOeB-t9eKM_oTnKPhQtWxC1aMvVDhes5FS2pNOcR1YZ-NYDegXSoSqtGghmUjsQn2ORmKNQDMAmvY__lvb99DKJf25I_aA9efs4OzH4vDn6YumqAkLiVrc-Q7_Yy17KFCNKM");'></div>
+</div>
+</div>
+</header>
+<!-- Main Content Layout -->
+<main class="layout-container flex h-full grow flex-col px-4 md:px-8 py-6 w-full mx-auto max-w-[1400px]">
+<!-- Page Heading & Actions -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
+<div class="flex flex-col gap-2">
+<h1 class="text-slate-900 dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Campaigns</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base font-normal max-w-2xl">Manage and monitor your bulk PR campaigns across repositories. Orchestrate changes at scale.</p>
+</div>
+<button class="flex shrink-0 items-center justify-center rounded-lg h-11 px-5 bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 text-sm font-bold leading-normal tracking-[0.015em] transition-all transform hover:scale-[1.02]">
+<span class="material-symbols-outlined mr-2 text-[20px]">add</span>
+<span class="truncate">New Campaign</span>
+</button>
+</div>
+<!-- Stats Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal uppercase tracking-wider">Active Campaigns</p>
+<span class="material-symbols-outlined text-primary">rocket_launch</span>
+</div>
+<div class="flex items-end gap-3 mt-1">
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">5</p>
+<p class="text-emerald-500 text-sm font-medium leading-normal mb-1 flex items-center">
+<span class="material-symbols-outlined text-sm mr-0.5">trending_up</span>
+                        +2%
+                    </p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal uppercase tracking-wider">PRs Awaiting Merge</p>
+<span class="material-symbols-outlined text-primary">rebase</span>
+</div>
+<div class="flex items-end gap-3 mt-1">
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">142</p>
+<p class="text-emerald-500 text-sm font-medium leading-normal mb-1 flex items-center">
+<span class="material-symbols-outlined text-sm mr-0.5">trending_up</span>
+                        +15%
+                    </p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal uppercase tracking-wider">Success Rate</p>
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<div class="flex items-end gap-3 mt-1">
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">94%</p>
+<p class="text-orange-500 text-sm font-medium leading-normal mb-1 flex items-center">
+<span class="material-symbols-outlined text-sm mr-0.5">trending_down</span>
+                        -1%
+                    </p>
+</div>
+</div>
+</div>
+<!-- Filters & Toolbar -->
+<div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
+<div class="flex gap-2 flex-wrap w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0">
+<button class="group flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-200 dark:bg-border-dark px-3 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-[18px] text-slate-700 dark:text-slate-300">filter_list</span>
+<p class="text-slate-700 dark:text-slate-300 text-sm font-medium leading-normal">All Status</p>
+<span class="material-symbols-outlined text-[18px] text-slate-700 dark:text-slate-300">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg border border-border-light dark:border-border-dark bg-transparent px-3 hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors">
+<span class="material-symbols-outlined text-[18px] text-blue-500">play_arrow</span>
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal">Running</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg border border-border-light dark:border-border-dark bg-transparent px-3 hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors">
+<span class="material-symbols-outlined text-[18px] text-emerald-500">check_circle</span>
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal">Completed</p>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg border border-border-light dark:border-border-dark bg-transparent px-3 hover:bg-slate-100 dark:hover:bg-surface-dark transition-colors">
+<span class="material-symbols-outlined text-[18px] text-red-500">cancel</span>
+<p class="text-slate-600 dark:text-slate-300 text-sm font-medium leading-normal">Failed</p>
+</button>
+</div>
+<div class="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-[16px] animate-pulse text-emerald-500">fiber_manual_record</span>
+<span>Live updates enabled</span>
+</div>
+</div>
+<!-- Table Container -->
+<div class="w-full overflow-hidden rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full min-w-[1000px]">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-900/50 border-b border-border-light dark:border-border-dark">
+<th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 w-[25%]">Campaign Name</th>
+<th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 w-[12%]">Status</th>
+<th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 w-[20%]">Progress</th>
+<th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 w-[13%]">Targeted</th>
+<th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 w-[15%]">PRs Merged/Failed</th>
+<th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 w-[10%]">Last Updated</th>
+<th class="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 w-[5%]"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-light dark:divide-border-dark">
+<!-- Row 1: Running -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">Update Go Dependencies</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">ID: #campaign-8832</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-blue-100 dark:bg-blue-500/10 px-2.5 py-1 text-xs font-medium text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+</span>
+                                    Running
+                                </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-full max-w-[140px] h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 56%;"></div>
+</div>
+<span class="text-xs font-medium text-slate-700 dark:text-slate-300">56%</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">
+                                120 Repos
+                            </td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-sm">
+<span class="text-emerald-600 dark:text-emerald-400 font-medium">60</span>
+<span class="text-slate-400 dark:text-slate-600">/</span>
+<span class="text-slate-500 dark:text-slate-400">0</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
+                                Just now
+                            </td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Completed -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">Add CI Workflow</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">ID: #campaign-8821</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 dark:bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20">
+<span class="material-symbols-outlined text-[14px]">check</span>
+                                    Completed
+                                </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-full max-w-[140px] h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+<div class="h-full rounded-full bg-emerald-500" style="width: 100%;"></div>
+</div>
+<span class="text-xs font-medium text-slate-700 dark:text-slate-300">100%</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">
+                                45 Repos
+                            </td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-sm">
+<span class="text-emerald-600 dark:text-emerald-400 font-medium">45</span>
+<span class="text-slate-400 dark:text-slate-600">/</span>
+<span class="text-slate-500 dark:text-slate-400">0</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
+                                2h ago
+                            </td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Failed -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">Remove Deprecated API</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">ID: #campaign-8799</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-red-100 dark:bg-red-500/10 px-2.5 py-1 text-xs font-medium text-red-700 dark:text-red-400 border border-red-200 dark:border-red-500/20">
+<span class="material-symbols-outlined text-[14px]">error</span>
+                                    Failed
+                                </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-full max-w-[140px] h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+<div class="h-full rounded-full bg-red-500" style="width: 20%;"></div>
+</div>
+<span class="text-xs font-medium text-slate-700 dark:text-slate-300">20%</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">
+                                80 Repos
+                            </td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-sm">
+<span class="text-emerald-600 dark:text-emerald-400 font-medium">16</span>
+<span class="text-slate-400 dark:text-slate-600">/</span>
+<span class="text-red-500 font-medium">15</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
+                                1d ago
+                            </td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Paused -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-slate-900 dark:text-white">Migration to v2 SDK</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">ID: #campaign-8750</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-amber-100 dark:bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20">
+<span class="material-symbols-outlined text-[14px]">pause</span>
+                                    Paused
+                                </span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-full max-w-[140px] h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+<div class="h-full rounded-full bg-amber-500" style="width: 75%;"></div>
+</div>
+<span class="text-xs font-medium text-slate-700 dark:text-slate-300">75%</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">
+                                200 Repos
+                            </td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-sm">
+<span class="text-emerald-600 dark:text-emerald-400 font-medium">150</span>
+<span class="text-slate-400 dark:text-slate-600">/</span>
+<span class="text-slate-500 dark:text-slate-400">0</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
+                                3d ago
+                            </td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between border-t border-border-light dark:border-border-dark px-6 py-3">
+<p class="text-sm text-slate-500 dark:text-slate-400">
+                    Showing <span class="font-medium text-slate-900 dark:text-white">1</span> to <span class="font-medium text-slate-900 dark:text-white">4</span> of <span class="font-medium text-slate-900 dark:text-white">12</span> results
+                </p>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-surface-dark px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50">
+                        Previous
+                    </button>
+<button class="flex items-center justify-center rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-surface-dark px-3 py-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700">
+                        Next
+                    </button>
+</div>
+</div>
+</div>
+</main>
+</body></html>
