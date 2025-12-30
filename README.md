@@ -22,4 +22,4 @@ Octobatch is a self-hosted platform for declaratively running large-scale code c
 - First spec package: `docs/specs/spec-1/spec-1.md`
 
 ## Status
-This repository currently contains product, design, and specification artifacts. Implementation work will follow the specs.
+Foundational FastAPI skeletons for the API Gateway, Campaign Service, Selection Service, and Token Service now live under `src/octobatch`. Each exposes `/healthz` to verify Postgres, Redis, blobstore, and GitHub API connectivity. A Helm chart (`helm/octobatch`) packages the services with default-deny NetworkPolicies and secret wiring for Postgres (`octobatch-postgres`), Redis (`octobatch-redis`), blob storage (`octobatch-blobstore`), and GitHub App credentials (`github-app-credentials`).
