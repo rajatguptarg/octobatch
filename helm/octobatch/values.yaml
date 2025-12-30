@@ -1,0 +1,92 @@
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: ghcr.io/octobatch/octobatch
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
+
+global:
+  environment: dev
+  github:
+    apiBaseUrl: https://api.github.com
+    appCredentialsSecret: github-app-credentials
+  databaseSecret: octobatch-postgres
+  redisSecret: octobatch-redis
+  blobstoreSecret: octobatch-blobstore
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 1000
+    seccompProfile:
+      type: RuntimeDefault
+    fsGroup: 1000
+  containerSecurityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+
+services:
+  apiGateway:
+    enabled: true
+    replicas: 2
+    port: 8000
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+  campaign:
+    enabled: true
+    replicas: 2
+    port: 8000
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 1
+        memory: 1Gi
+  selection:
+    enabled: true
+    replicas: 2
+    port: 8000
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 1
+        memory: 1Gi
+  token:
+    enabled: true
+    replicas: 1
+    port: 8000
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+networkPolicy:
+  enabled: true
+  allowDNS: true
+  githubCidrs: []
+  postgresCidrs: []
+  redisCidrs: []
+  blobstoreCidrs: []
+  egressPorts:
+    github: 443
+    postgres: 5432
+    redis: 6379
+    blobstore: 443
+
+serviceAccount:
+  create: true
+  name: ""

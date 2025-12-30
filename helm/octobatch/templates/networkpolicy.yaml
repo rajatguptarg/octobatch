@@ -1,0 +1,72 @@
+{{- $fullname := include "octobatch.fullname" . -}}
+{{- if .Values.networkPolicy.enabled }}
+{{- range $name, $svc := .Values.services }}
+{{- if $svc.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $fullname }}-{{ $name | lower }}-egress
+  labels:
+    app.kubernetes.io/name: {{ include "octobatch.name" $ }}
+    app.kubernetes.io/component: {{ $name | lower }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/version: {{ $.Chart.AppVersion }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "octobatch.name" $ }}
+      app.kubernetes.io/component: {{ $name | lower }}
+      app.kubernetes.io/instance: {{ $.Release.Name }}
+  policyTypes:
+    - Egress
+  egress:
+    {{- if $.Values.networkPolicy.allowDNS }}
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+    {{- end }}
+    {{- range $cidr := $.Values.networkPolicy.postgresCidrs }}
+    - to:
+        - ipBlock:
+            cidr: {{ $cidr }}
+      ports:
+        - port: {{ $.Values.networkPolicy.egressPorts.postgres }}
+          protocol: TCP
+    {{- end }}
+    {{- range $cidr := $.Values.networkPolicy.redisCidrs }}
+    - to:
+        - ipBlock:
+            cidr: {{ $cidr }}
+      ports:
+        - port: {{ $.Values.networkPolicy.egressPorts.redis }}
+          protocol: TCP
+    {{- end }}
+    {{- range $cidr := $.Values.networkPolicy.blobstoreCidrs }}
+    - to:
+        - ipBlock:
+            cidr: {{ $cidr }}
+      ports:
+        - port: {{ $.Values.networkPolicy.egressPorts.blobstore }}
+          protocol: TCP
+    {{- end }}
+    {{- range $cidr := $.Values.networkPolicy.githubCidrs }}
+    - to:
+        - ipBlock:
+            cidr: {{ $cidr }}
+      ports:
+        - port: {{ $.Values.networkPolicy.egressPorts.github }}
+          protocol: TCP
+    {{- end }}
+---
+{{- end }}
+{{- end }}
+{{- end }}
